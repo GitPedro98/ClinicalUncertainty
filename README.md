@@ -297,3 +297,5 @@ The protocol (§4) specifies a broader metric set than the pre-pilot could opera
 `python analysis/analyze_prepilot.py sus_bench_scores.csv` regenerates every number in this document and `analysis_results.json`, which feeds `leaderboard.html`. Seed 20260920.
 
 **Contact** · pvfhealthtech@gmail.com
+
+**[Interactive pre-pilot leaderboard](https://github.com/GitPedro98/ClinicalUncertainty/index.html)**
