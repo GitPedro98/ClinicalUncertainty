@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SUS-UncertaintyBench — Pre-pilot leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#ffffff; --paper:#ffffff;
+  --ink:#1B2331; --ink-2:#4A5466; --ink-3:#8A93A3; --rule:#E3E6EB;
+  --grid-minor:#F8E9E9; --grid-major:#EECFCF;
+  --cardio:#B3243B; --neuro:#3E4DA6; --band:rgba(27,35,49,.08);
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#12161D; --paper:#161B23;
+    --ink:#E4E8EF; --ink-2:#AEB6C4; --ink-3:#6F7888; --rule:#283040;
+    --grid-minor:#21191D; --grid-major:#33242A;
+    --cardio:#E0607A; --neuro:#8E9CF2; --band:rgba(228,232,239,.09);
+  }
+}
+:root[data-theme="dark"]{
+  --page:#12161D; --paper:#161B23;
+  --ink:#E4E8EF; --ink-2:#AEB6C4; --ink-3:#6F7888; --rule:#283040;
+  --grid-minor:#21191D; --grid-major:#33242A;
+  --cardio:#E0607A; --neuro:#8E9CF2; --band:rgba(228,232,239,.09);
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased}
+main{max-width:1040px;margin:0 auto;padding:56px 28px 96px}
+.prose{max-width:66ch}
+h1{font-size:clamp(34px,5vw,48px);line-height:1.05;letter-spacing:-.02em;font-weight:600;margin:0 0 14px}
+.deck{font-size:20px;line-height:1.45;color:var(--ink-2);margin:0 0 10px;max-width:58ch}
+.meta{font-family:var(--sans);font-size:14.5px;color:var(--ink-3);margin:0}
+.claim{font-size:clamp(26px,3.6vw,36px);line-height:1.15;letter-spacing:-.015em;font-weight:600;margin:64px 0 12px;max-width:26ch}
+h2{font-size:26px;line-height:1.2;letter-spacing:-.01em;font-weight:600;margin:88px 0 12px}
+h3{font-family:var(--sans);font-size:15px;font-weight:600;margin:32px 0 8px;color:var(--ink-2)}
+p{margin:0 0 14px}
+.stat{font-family:var(--sans);font-variant-numeric:tabular-nums;white-space:nowrap}
+figure{margin:24px 0 0}
+.plot{border-radius:6px;overflow:hidden;border:1px solid var(--rule)}
+.ecg{background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid-major) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),
+    linear-gradient(var(--grid-minor) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-minor) 1px,transparent 1px);
+  background-size:40px 40px,40px 40px,8px 8px,8px 8px;background-position:-1px -1px}
+figcaption{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink-3);margin-top:10px;max-width:78ch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media (max-width:760px){.two{grid-template-columns:1fr} main{padding:40px 18px 72px}}
+table{border-collapse:collapse;font-family:var(--sans);font-variant-numeric:tabular-nums;font-size:15px;width:100%;margin-top:22px}
+.tablewrap{overflow-x:auto}
+th{text-align:left;font-weight:600;color:var(--ink-2);border-bottom:1.5px solid var(--ink);padding:8px 14px 8px 0;white-space:nowrap}
+td{padding:9px 14px 9px 0;border-bottom:1px solid var(--rule);white-space:nowrap}
+td.num,th.num{text-align:right}
+.legend{font-family:var(--sans);font-size:13.5px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+figure + .prose,.two + .prose{margin-top:30px}
+.limits{border-top:1.5px solid var(--ink);margin-top:88px;padding-top:8px}
+footer{font-family:var(--sans);font-size:14px;color:var(--ink-3);margin-top:56px}
+a{color:inherit;text-underline-offset:3px}
+/* svg classes */
+.t{font-family:var(--sans);font-size:12.5px;fill:var(--ink-2)}
+.tl{font-family:var(--sans);font-size:13.5px;fill:var(--ink);font-weight:600}
+.ts{font-family:var(--sans);font-size:11.5px;fill:var(--ink-3)}
+.ax{stroke:var(--ink-3);stroke-width:1}
+.ref{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:3 3}
+.ink{fill:var(--ink)} .sink{stroke:var(--ink)}
+.cardio{fill:var(--cardio)} .scardio{stroke:var(--cardio)}
+.neuro{fill:var(--neuro)} .sneuro{stroke:var(--neuro)}
+.band{fill:var(--band)}
+.paper{fill:var(--paper)}
+.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 900ms cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.draw{animation:none;stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>SUS-UncertaintyBench</h1>
+  <p class="deck">A pre-pilot leaderboard for frontier language models on Brazilian emergency medicine, under controlled divergence between training and deployment context.</p>
+  <p class="meta">85 physician-scored responses on 30 items from 10 clinical archetypes, three models at temperature 0. Single annotator. September 2026.</p>
+</header>
+
+<p class="claim">At this sample size, the three models cannot be ranked.</p>
+<div class="prose">
+<p>Across the 25 items answered by all three models, a Friedman test finds no difference in scores (<span class="stat">χ² = 0.83, p = 0.66</span>). Every 95% interval overlaps the others. GLM 5.2 places first in 67% of bootstrap resamples and Kimi K2.7 Code in 32%, so the order below is a point estimate, not a ranking.</p>
+</div>
+<figure>
+  <div class="plot ecg" id="hero" style="height:240px"></div>
+  <figcaption>Mean rubric score, 0 (fail) to 2 (pass), with 95% intervals from a cluster bootstrap that resamples archetypes (10,000 draws). The shaded band is the range shared by all three intervals.</figcaption>
+</figure>
+<div class="tablewrap">
+<table id="board"><thead><tr><th>Model</th><th class="num">Mean</th><th class="num">95% interval</th><th class="num">Placed first</th><th class="num">Pass</th><th class="num">Fail</th><th class="num">Scored</th></tr></thead><tbody></tbody></table>
+</div>
+
+<h2>How often each model lands in each place</h2>
+<div class="prose"><p>Resampling archetypes 10,000 times and re-ranking each time shows how much of the order is noise. DeepSeek V4 Pro almost never places first, but no model is reliably ahead of the others.</p></div>
+<figure>
+  <div class="plot" id="ranks" style="height:170px"></div>
+  <div class="legend"><span><span class="sw" style="background:var(--ink)"></span>First</span><span><span class="sw" style="background:var(--ink);opacity:.45"></span>Second</span><span><span class="sw" style="background:var(--ink);opacity:.15"></span>Third</span></div>
+</figure>
+
+<h2>The benchmark measures something stable</h2>
+<div class="prose">
+<p>The strongest result is about the instrument, not the models. Items that are hard for one model are hard for the others: Kendall’s coefficient of concordance across the three models is <span class="stat">W = 0.58 (p = 0.014)</span>, with pairwise rank correlations between 0.61 and 0.71. Independently trained models agree on which cases are difficult.</p>
+<p>A mixed-effects model with a random intercept per archetype attributes <span class="stat">36%</span> of score variance to the case itself. Model identity is not a significant term.</p>
+</div>
+<figure>
+  <div class="plot" id="items" style="height:170px"></div>
+  <div class="legend"><span><span class="sw" style="background:var(--ink);opacity:.9"></span>Fail</span><span><span class="sw" style="background:var(--ink);opacity:.45"></span>Partial</span><span><span class="sw" style="background:var(--ink);opacity:.13"></span>Pass</span><span><span class="sw" style="border:1px dashed var(--ink-3)"></span>Not collected</span><span><span class="sw" style="background:var(--cardio)"></span>Cardiovascular</span><span><span class="sw" style="background:var(--neuro)"></span>Neurological</span></div>
+  <figcaption>Each column is one item, ordered from hardest to easiest by mean score. Darker means worse. Hover a column to see the item.</figcaption>
+</figure>
+<figure>
+  <div class="plot" id="icc" style="height:44px"></div>
+</figure>
+
+<h2>Where the difficulty sits</h2>
+<div class="prose">
+<p>The two ends of the archetype ranking are both coronary cases. CARDIO_03, an acute inferior STEMI with every finding produced at admission, scored 2.00 across all eight responses. CARDIO_01, an asymptomatic follow-up in which the ECG, troponin and echocardiogram were all two months old, scored 0.22 with no passing response. The difference between them is whether the model has to place the evidence in time before reading it.</p>
+</div>
+<figure>
+  <div class="plot ecg" id="archs" style="height:430px"></div>
+  <figcaption>Small dots are individual responses; the larger mark is the archetype mean.</figcaption>
+</figure>
+<div class="prose">
+<p>By dimension, local constraints in cardiovascular cases sit furthest from the neurological cases, and their intervals do not overlap. Within cardiology, however, the three dimensions cannot be told apart: the pre-pilot does not support a claim that any one dimension is the weakest.</p>
+</div>
+<figure>
+  <div class="plot ecg" id="cells" style="height:250px"></div>
+  <div class="legend"><span><span class="sw" style="background:var(--cardio)"></span>Cardiovascular</span><span><span class="sw" style="background:var(--neuro)"></span>Neurological</span></div>
+</figure>
+
+<h2>How robust is the category difference</h2>
+<div class="prose">
+<p>Treating the archetype as the unit, neurological cases score <span class="stat">0.62</span> higher. An exact permutation test over all 252 ways of splitting ten archetypes into two groups of five gives <span class="stat">p = 0.048</span>. The result depends on one case: without CARDIO_01 the difference falls to <span class="stat">0.38 (p = 0.087)</span>.</p>
+</div>
+<div class="two">
+  <figure>
+    <div class="plot" id="perm" style="height:230px"></div>
+    <figcaption>Differences under every possible relabelling. Darker bars are as or more extreme than the observed value.</figcaption>
+  </figure>
+  <figure>
+    <div class="plot" id="loo" style="height:230px"></div>
+    <figcaption>The difference recomputed with each archetype left out.</figcaption>
+  </figure>
+</div>
+
+<h2>Response to perturbation</h2>
+<div class="prose">
+<p>For context-blindness items, each second prompt changed one variable that should change the plan. Responses that kept their initial plan failed outright more often than those that revised it, 6 of 28 against 3 of 30 (<span class="stat">odds ratio 2.45</span>). The direction is consistent with rigidity rather than oscillation, but it is not significant (<span class="stat">Fisher p = 0.29</span>). Whether a response revised its plan was classified automatically and checked against three annotator notes.</p>
+</div>
+<figure>
+  <div class="plot" id="rigid" style="height:130px"></div>
+  <div class="legend"><span><span class="sw" style="background:var(--ink);opacity:.9"></span>Fail</span><span><span class="sw" style="background:var(--ink);opacity:.45"></span>Partial</span><span><span class="sw" style="background:var(--ink);opacity:.13"></span>Pass</span></div>
+</figure>
+
+<h2>Adjusted estimates</h2>
+<div class="prose"><p>Fixed effects from the mixed model, with GLM 5.2, cardiovascular and temporal reasoning as references. Only the category term excludes zero.</p></div>
+<figure>
+  <div class="plot ecg" id="mixed" style="height:250px"></div>
+  <figcaption>Score ~ model + category + dimension + (1 | archetype), fitted by REML. Bars are 95% confidence intervals.</figcaption>
+</figure>
+
+<h2>What sample size would settle these questions</h2>
+<div class="prose">
+<p>The pre-pilot is underpowered for both comparisons, by design. Simulating from the fitted variance components, detecting the observed category difference with 80% power needs about ten archetypes per category; the pre-pilot has five. Separating models that differ by the observed 0.24 needs roughly 70 paired items; it has 25. The proposed next phase, 30 archetypes and about 180 variations, reaches 80% power for both.</p>
+</div>
+<div class="two">
+  <figure><div class="plot" id="powcat" style="height:230px"></div><figcaption>Category effect of 0.62, by archetypes per category.</figcaption></figure>
+  <figure><div class="plot" id="powmod" style="height:230px"></div><figcaption>Model gap of 0.24, by items answered by every model.</figcaption></figure>
+</div>
+
+<section class="limits prose">
+  <h2 style="margin-top:28px">Method and limits</h2>
+  <p>Each archetype holds a clinical core fixed and varies one controlled variable between a first and a second prompt. Responses were scored pass, partial or fail against conditions written before inference, by one emergency physician. Of 172 collected pairs, the 85 testing context blindness and relational reasoning are scored; prior override and reasoning spectrum are not yet.</p>
+  <p>The largest limitation is the single annotator: there is no inter-rater agreement yet. All perturbations are directional, so unjustified oscillation cannot be measured. The three models were chosen for API cost, not as a sample of the frontier. Calibration metrics described in the protocol need confidence elicitation that this version of the prompts does not include.</p>
+  <p>Intervals come from resampling archetypes, the level at which responses are correlated. With ten archetypes, interval coverage is approximate.</p>
+</section>
+
+<footer>Pedro Victor Freitas-Medrado, MD. pvfhealthtech@gmail.com. Analysis code and item-level data are in the project repository.</footer>
+</main>
+
+<script>
+const DATA = {"n_scored": 85, "n_items": 30, "n_archetypes": 10, "bootstrap_draws": 10000, "seed": 20260920, "leaderboard": [{"model": "glm_5_2", "label": "GLM 5.2", "n": 29, "mean": 1.5862068965517242, "ci": [1.1333333333333333, 1.9310344827586208], "pass_rate": 0.7241379310344828, "fail_rate": 0.13793103448275862, "p_rank1": 0.6737, "rank_dist": [0.6737, 0.2817, 0.0446]}, {"model": "kimi_k2_7_code", "label": "Kimi K2.7 Code", "n": 27, "mean": 1.5185185185185186, "ci": [1.1428571428571428, 1.8518518518518519], "pass_rate": 0.6296296296296297, "fail_rate": 0.1111111111111111, "p_rank1": 0.3155, "rank_dist": [0.3155, 0.6629, 0.0216]}, {"model": "deepseek_v4_pro", "label": "DeepSeek V4 Pro", "n": 29, "mean": 1.3448275862068966, "ci": [1.0344827586206897, 1.6296296296296295], "pass_rate": 0.5517241379310345, "fail_rate": 0.20689655172413793, "p_rank1": 0.0108, "rank_dist": [0.0108, 0.0554, 0.9338]}], "friedman": {"n_items_complete": 25, "chi2": 0.827586206896583, "p": 0.661137724231845}, "pairwise": [{"a": "DeepSeek V4 Pro", "b": "GLM 5.2", "diff": -0.16, "ci": [-0.47058823529411764, 0.0], "wilcoxon_p": 0.486121485132055}, {"a": "DeepSeek V4 Pro", "b": "Kimi K2.7 Code", "diff": -0.12, "ci": [-0.25, 0.0], "wilcoxon_p": 0.5190408497380881}, {"a": "GLM 5.2", "b": "Kimi K2.7 Code", "diff": 0.04, "ci": [-0.14285714285714285, 0.2], "wilcoxon_p": 0.9659712146940179}], "kendall_w": {"W": 0.5802136752136752, "chi2": 41.77538461538461, "df": 24, "p": 0.013672346790087447, "n_items": 25}, "item_spearman": {"DeepSeek V4 Pro \u00d7 GLM 5.2": 0.6085640356846245, "DeepSeek V4 Pro \u00d7 Kimi K2.7 Code": 0.7098416124630941, "GLM 5.2 \u00d7 Kimi K2.7 Code": 0.6736647832073188}, "category": {"diff_neuro_minus_cardio": 0.6206349206349204, "p_exact_permutation": 0.047619047619047616, "n_permutations": 252, "archetype_means": {"CARDIO_01_I21": 0.2222222222222222, "CARDIO_02_I20": 1.3333333333333333, "CARDIO_03_I25": 2.0, "CARDIO_04_I24": 1.0, "CARDIO_05_R07": 1.375, "NEURO_01_I64": 1.8888888888888888, "NEURO_02_G45": 1.7777777777777777, "NEURO_03_I61": 1.875, "NEURO_04_I63": 1.7142857142857142, "NEURO_05_G41": 1.7777777777777777}, "leave_one_out": {"CARDIO_01_I21": 0.3796626984126983, "CARDIO_02_I20": 0.657440476190476, "CARDIO_03_I25": 0.8241071428571427, "CARDIO_04_I24": 0.5741071428571427, "CARDIO_05_R07": 0.6678571428571427, "NEURO_01_I64": 0.6000992063492063, "NEURO_02_G45": 0.627876984126984, "NEURO_03_I61": 0.6035714285714284, "NEURO_04_I63": 0.6437499999999998, "NEURO_05_G41": 0.627876984126984}, "mannwhitney_p": 0.14245669739409875}, "mixed_model": {"formula": "score ~ model + category + dimension + (1 | archetype)", "fixed_effects": [{"term": "Intercept", "est": 1.3291920220126492, "ci": [0.8628277870801608, 1.7955562569451375], "p": 2.3219334206269733e-08}, {"term": "C(model, Treatment('glm_5_2'))[T.deepseek_v4_pro]", "est": -0.2245211491953499, "ci": [-0.5122748622772726, 0.0632325638865728], "p": 0.1261973122142777}, {"term": "C(model, Treatment('glm_5_2'))[T.kimi_k2_7_code]", "est": -0.024519414163482054, "ci": [-0.3191510204712559, 0.2701121921442917], "p": 0.8704323411232384}, {"term": "C(category)[T.neurological]", "est": 0.6330822576364865, "ci": [0.060612845491052725, 1.2055516697819204], "p": 0.030197950711656454}, {"term": "C(dimension)[T.D3]", "est": -0.196052963044616, "ci": [-0.4842687963477424, 0.09216287025851039], "p": 0.18245775867444836}, {"term": "C(dimension)[T.D5]", "est": 0.009988556283349057, "ci": [-0.28626849863240034, 0.30624561119909843], "p": 0.9473126707847188}], "var_archetype": 0.17611731231212416, "var_residual": 0.31138759358089324, "icc_archetype": 0.3612626461461148}, "cells": [{"dimension": "D1", "category": "cardiovascular", "n": 15, "mean": 1.2666666666666666, "ci": [0.6666666666666666, 2.0], "pass_rate": 0.4666666666666667}, {"dimension": "D1", "category": "neurological", "n": 13, "mean": 1.8461538461538463, "ci": [1.6363636363636365, 2.0], "pass_rate": 0.8461538461538461}, {"dimension": "D3", "category": "cardiovascular", "n": 15, "mean": 0.9333333333333333, "ci": [0.3333333333333333, 1.5], "pass_rate": 0.26666666666666666}, {"dimension": "D3", "category": "neurological", "n": 15, "mean": 1.8, "ci": [1.5333333333333334, 2.0], "pass_rate": 0.8666666666666667}, {"dimension": "D5", "category": "cardiovascular", "n": 13, "mean": 1.3076923076923077, "ci": [0.5, 2.0], "pass_rate": 0.5384615384615384}, {"dimension": "D5", "category": "neurological", "n": 14, "mean": 1.7857142857142858, "ci": [1.4, 2.0], "pass_rate": 0.8571428571428571}], "rigidity": {"table": {"kept_fail": 6, "kept_nonfail": 22, "revised_fail": 3, "revised_nonfail": 27}, "odds_ratio": 2.4545454545454546, "fisher_p": 0.2904056630325689, "revision_rate_by_model": {"DeepSeek V4 Pro": 0.6, "GLM 5.2": 0.3, "Kimi K2.7 Code": 0.6666666666666666}, "by_score": {"pass": {"kept": 17, "revised": 18}, "partial": {"kept": 5, "revised": 9}, "fail": {"kept": 6, "revised": 3}}}, "power": {"category_effect_size": 0.6206349206349204, "model_gap": 0.24137931034482762, "category_curve": [{"archetypes_per_category": 5, "power": 0.4805}, {"archetypes_per_category": 8, "power": 0.6905}, {"archetypes_per_category": 10, "power": 0.802}, {"archetypes_per_category": 15, "power": 0.9505}, {"archetypes_per_category": 20, "power": 0.988}, {"archetypes_per_category": 30, "power": 0.998}], "model_curve": [{"paired_items": 25, "power": 0.3995}, {"paired_items": 50, "power": 0.6935}, {"paired_items": 100, "power": 0.94}, {"paired_items": 150, "power": 0.993}, {"paired_items": 200, "power": 0.998}, {"paired_items": 300, "power": 1.0}], "sd_paired_diff": 0.6879922480183431}, "items": [{"item": "CARDIO_01_V6_H4_relational", "archetype": "CARDIO_01_I21", "hyp": "H4", "dim": "D5", "cat": "cardio", "scores": {"glm_5_2": 0, "kimi_k2_7_code": 0, "deepseek_v4_pro": 0}, "mean": 0.0}, {"item": "CARDIO_01_V1_H1_setting", "archetype": "CARDIO_01_I21", "hyp": "H1", "dim": "D3", "cat": "cardio", "scores": {"glm_5_2": 0, "kimi_k2_7_code": 0, "deepseek_v4_pro": 1}, "mean": 0.3333333333333333}, {"item": "CARDIO_01_V2_H1_temporal", "archetype": "CARDIO_01_I21", "hyp": "H1", "dim": "D1", "cat": "cardio", "scores": {"glm_5_2": 0, "kimi_k2_7_code": 1, "deepseek_v4_pro": 0}, "mean": 0.3333333333333333}, {"item": "CARDIO_05_V1_H1_setting", "archetype": "CARDIO_05_R07", "hyp": "H1", "dim": "D3", "cat": "cardio", "scores": {"glm_5_2": 0, "kimi_k2_7_code": 1, "deepseek_v4_pro": 0}, "mean": 0.3333333333333333}, {"item": "CARDIO_02_V1_H1_setting", "archetype": "CARDIO_02_I20", "hyp": "H1", "dim": "D3", "cat": "cardio", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 0, "deepseek_v4_pro": 1}, "mean": 1.0}, {"item": "CARDIO_02_V2_H1_temporal", "archetype": "CARDIO_02_I20", "hyp": "H1", "dim": "D1", "cat": "cardio", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 1, "deepseek_v4_pro": 0}, "mean": 1.0}, {"item": "CARDIO_04_V1_H1_setting", "archetype": "CARDIO_04_I24", "hyp": "H1", "dim": "D3", "cat": "cardio", "scores": {"glm_5_2": 1, "kimi_k2_7_code": 1, "deepseek_v4_pro": 1}, "mean": 1.0}, {"item": "CARDIO_04_V2_H1_temporal", "archetype": "CARDIO_04_I24", "hyp": "H1", "dim": "D1", "cat": "cardio", "scores": {"glm_5_2": 1, "kimi_k2_7_code": 1, "deepseek_v4_pro": 1}, "mean": 1.0}, {"item": "CARDIO_04_V6_H4_relational", "archetype": "CARDIO_04_I24", "hyp": "H4", "dim": "D5", "cat": "cardio", "scores": {"glm_5_2": 1, "kimi_k2_7_code": 1, "deepseek_v4_pro": 1}, "mean": 1.0}, {"item": "NEURO_04_V6_H4_relational", "archetype": "NEURO_04_I63", "hyp": "H4", "dim": "D5", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": null, "deepseek_v4_pro": 0}, "mean": 1.0}, {"item": "NEURO_05_V1_H1_setting", "archetype": "NEURO_05_G41", "hyp": "H1", "dim": "D3", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 0}, "mean": 1.3333333333333333}, {"item": "NEURO_03_V2_H1_temporal", "archetype": "NEURO_03_I61", "hyp": "H1", "dim": "D1", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": null, "deepseek_v4_pro": 1}, "mean": 1.5}, {"item": "NEURO_01_V1_H1_setting", "archetype": "NEURO_01_I64", "hyp": "H1", "dim": "D3", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 1}, "mean": 1.6666666666666667}, {"item": "NEURO_02_V2_H1_temporal", "archetype": "NEURO_02_G45", "hyp": "H1", "dim": "D1", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 1, "deepseek_v4_pro": 2}, "mean": 1.6666666666666667}, {"item": "NEURO_02_V6_H4_relational", "archetype": "NEURO_02_G45", "hyp": "H4", "dim": "D5", "cat": "neuro", "scores": {"glm_5_2": 1, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 1.6666666666666667}, {"item": "CARDIO_02_V6_H4_relational", "archetype": "CARDIO_02_I20", "hyp": "H4", "dim": "D5", "cat": "cardio", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "CARDIO_03_V1_H1_setting", "archetype": "CARDIO_03_I25", "hyp": "H1", "dim": "D3", "cat": "cardio", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "CARDIO_03_V2_H1_temporal", "archetype": "CARDIO_03_I25", "hyp": "H1", "dim": "D1", "cat": "cardio", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "CARDIO_03_V6_H4_relational", "archetype": "CARDIO_03_I25", "hyp": "H4", "dim": "D5", "cat": "cardio", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": null}, "mean": 2.0}, {"item": "CARDIO_05_V2_H1_temporal", "archetype": "CARDIO_05_R07", "hyp": "H1", "dim": "D1", "cat": "cardio", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "CARDIO_05_V6_H4_relational", "archetype": "CARDIO_05_R07", "hyp": "H4", "dim": "D5", "cat": "cardio", "scores": {"glm_5_2": null, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_01_V2_H1_temporal", "archetype": "NEURO_01_I64", "hyp": "H1", "dim": "D1", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_01_V6_H4_relational", "archetype": "NEURO_01_I64", "hyp": "H4", "dim": "D5", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_02_V1_H1_setting", "archetype": "NEURO_02_G45", "hyp": "H1", "dim": "D3", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_03_V1_H1_setting", "archetype": "NEURO_03_I61", "hyp": "H1", "dim": "D3", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_03_V6_H4_relational", "archetype": "NEURO_03_I61", "hyp": "H4", "dim": "D5", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_04_V1_H1_setting", "archetype": "NEURO_04_I63", "hyp": "H1", "dim": "D3", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_04_V2_H1_temporal", "archetype": "NEURO_04_I63", "hyp": "H1", "dim": "D1", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": null, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_05_V2_H1_temporal", "archetype": "NEURO_05_G41", "hyp": "H1", "dim": "D1", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}, {"item": "NEURO_05_V6_H4_relational", "archetype": "NEURO_05_G41", "hyp": "H4", "dim": "D5", "cat": "neuro", "scores": {"glm_5_2": 2, "kimi_k2_7_code": 2, "deepseek_v4_pro": 2}, "mean": 2.0}], "perm_distribution": [-0.6206349206349204, -0.4150793650793647, -0.45952380952380967, -0.4206349206349207, -0.48492063492063453, -0.4595238095238092, -0.2650793650793648, -0.30952380952380976, -0.27063492063492056, -0.3349206349206346, -0.3095238095238093, -0.10396825396825404, -0.06507936507936485, -0.12936507936507935, -0.10396825396825404, -0.10952380952380958, -0.17380952380952408, -0.14841269841269877, -0.13492063492063489, -0.10952380952380958, -0.17380952380952408, -0.6650793650793647, -0.7095238095238097, -0.6706349206349207, -0.7349206349206345, -0.7095238095238092, -0.503968253968254, -0.465079365079365, -0.5293650793650793, -0.503968253968254, -0.5095238095238095, -0.5738095238095242, -0.5484126984126985, -0.5349206349206348, -0.5095238095238095, -0.5738095238095242, -0.35396825396825404, -0.31507936507936485, -0.37936507936507935, -0.35396825396825404, -0.3595238095238096, -0.4238095238095241, -0.39841269841269855, -0.3849206349206349, -0.3595238095238096, -0.4238095238095241, -0.1539682539682541, -0.21825396825396837, -0.19285714285714306, -0.17936507936507917, -0.15396825396825387, -0.21825396825396837, -0.22380952380952412, -0.1984126984126986, -0.26269841269841265, -0.22380952380952412, -0.39841269841269855, -0.44285714285714306, -0.40396825396825387, -0.46825396825396837, -0.44285714285714284, -0.23730158730158735, -0.19841269841269837, -0.26269841269841265, -0.23730158730158712, -0.24285714285714266, -0.30714285714285694, -0.2817460317460314, -0.26825396825396797, -0.24285714285714266, -0.30714285714285694, -0.08730158730158721, -0.04841269841269846, -0.11269841269841252, -0.08730158730158721, -0.09285714285714275, -0.1571428571428568, -0.1317460317460315, -0.11825396825396806, -0.09285714285714275, -0.1571428571428568, 0.11269841269841252, 0.04841269841269846, 0.07380952380952377, 0.08730158730158721, 0.11269841269841252, 0.04841269841269846, 0.04285714285714293, 0.06825396825396823, 0.003968253968254176, 0.04285714285714293, -0.48730158730158735, -0.4484126984126984, -0.5126984126984127, -0.4873015873015871, -0.49285714285714266, -0.5571428571428569, -0.5317460317460314, -0.518253968253968, -0.49285714285714266, -0.5571428571428569, -0.2873015873015874, -0.3515873015873012, -0.3261904761904759, -0.3126984126984129, -0.28730158730158717, -0.35158730158730145, -0.3571428571428572, -0.33174603174603146, -0.39603174603174573, -0.3571428571428572, -0.13730158730158726, -0.20158730158730132, -0.176190476190476, -0.1626984126984128, -0.13730158730158748, -0.20158730158730154, -0.20714285714285707, -0.18174603174603177, -0.24603174603174582, -0.20714285714285707, -0.0015873015873015817, 0.023809523809523725, -0.040476190476190554, -0.0015873015873015817, -0.04603174603174587, 0.04603174603174587, 0.0015873015873015817, 0.040476190476190554, -0.023809523809523725, 0.0015873015873015817, 0.20714285714285707, 0.24603174603174582, 0.18174603174603177, 0.20714285714285707, 0.20158730158730154, 0.13730158730158748, 0.1626984126984128, 0.176190476190476, 0.20158730158730132, 0.13730158730158726, 0.3571428571428572, 0.39603174603174573, 0.33174603174603146, 0.3571428571428572, 0.35158730158730145, 0.28730158730158717, 0.3126984126984129, 0.3261904761904759, 0.3515873015873012, 0.2873015873015874, 0.5571428571428569, 0.49285714285714266, 0.518253968253968, 0.5317460317460314, 0.5571428571428569, 0.49285714285714266, 0.4873015873015871, 0.5126984126984127, 0.4484126984126984, 0.48730158730158735, -0.04285714285714293, -0.003968253968254176, -0.06825396825396823, -0.04285714285714293, -0.04841269841269846, -0.11269841269841252, -0.08730158730158721, -0.07380952380952377, -0.04841269841269846, -0.11269841269841252, 0.1571428571428568, 0.09285714285714275, 0.11825396825396806, 0.1317460317460315, 0.1571428571428568, 0.09285714285714275, 0.08730158730158721, 0.11269841269841252, 0.04841269841269846, 0.08730158730158721, 0.30714285714285694, 0.24285714285714266, 0.26825396825396797, 0.2817460317460314, 0.30714285714285694, 0.24285714285714266, 0.23730158730158712, 0.26269841269841265, 0.19841269841269837, 0.23730158730158735, 0.44285714285714284, 0.46825396825396837, 0.40396825396825387, 0.44285714285714306, 0.39841269841269855, 0.22380952380952412, 0.26269841269841265, 0.1984126984126986, 0.22380952380952412, 0.21825396825396837, 0.15396825396825387, 0.17936507936507917, 0.19285714285714306, 0.21825396825396837, 0.1539682539682541, 0.4238095238095241, 0.3595238095238096, 0.3849206349206349, 0.39841269841269855, 0.4238095238095241, 0.3595238095238096, 0.35396825396825404, 0.37936507936507935, 0.31507936507936485, 0.35396825396825404, 0.5738095238095242, 0.5095238095238095, 0.5349206349206348, 0.5484126984126985, 0.5738095238095242, 0.5095238095238095, 0.503968253968254, 0.5293650793650793, 0.465079365079365, 0.503968253968254, 0.7095238095238092, 0.7349206349206345, 0.6706349206349207, 0.7095238095238097, 0.6650793650793647, 0.17380952380952408, 0.10952380952380958, 0.13492063492063489, 0.14841269841269877, 0.17380952380952408, 0.10952380952380958, 0.10396825396825404, 0.12936507936507935, 0.06507936507936485, 0.10396825396825404, 0.3095238095238093, 0.3349206349206346, 0.27063492063492056, 0.30952380952380976, 0.2650793650793648, 0.4595238095238092, 0.48492063492063453, 0.4206349206349207, 0.45952380952380967, 0.4150793650793647, 0.6206349206349204], "archetypes": [{"archetype": "CARDIO_01_I21", "cat": "cardio", "mean": 0.2222222222222222, "n": 9, "scores": [1, 0, 0, 0, 0, 1, 0, 0, 0]}, {"archetype": "CARDIO_04_I24", "cat": "cardio", "mean": 1.0, "n": 9, "scores": [1, 1, 1, 1, 1, 1, 1, 1, 1]}, {"archetype": "CARDIO_02_I20", "cat": "cardio", "mean": 1.3333333333333333, "n": 9, "scores": [1, 0, 2, 2, 0, 1, 2, 2, 2]}, {"archetype": "CARDIO_05_R07", "cat": "cardio", "mean": 1.375, "n": 8, "scores": [0, 2, 0, 2, 1, 2, 2, 2]}, {"archetype": "NEURO_04_I63", "cat": "neuro", "mean": 1.7142857142857142, "n": 7, "scores": [2, 2, 2, 2, 2, 0, 2]}, {"archetype": "NEURO_02_G45", "cat": "neuro", "mean": 1.7777777777777777, "n": 9, "scores": [2, 2, 2, 2, 2, 1, 2, 1, 2]}, {"archetype": "NEURO_05_G41", "cat": "neuro", "mean": 1.7777777777777777, "n": 9, "scores": [0, 2, 2, 2, 2, 2, 2, 2, 2]}, {"archetype": "NEURO_03_I61", "cat": "neuro", "mean": 1.875, "n": 8, "scores": [2, 1, 2, 2, 2, 2, 2, 2]}, {"archetype": "NEURO_01_I64", "cat": "neuro", "mean": 1.8888888888888888, "n": 9, "scores": [1, 2, 2, 2, 2, 2, 2, 2, 2]}, {"archetype": "CARDIO_03_I25", "cat": "cardio", "mean": 2.0, "n": 8, "scores": [2, 2, 2, 2, 2, 2, 2, 2]}]};
+const NS='http://www.w3.org/2000/svg';
+const LABEL={glm_5_2:'GLM 5.2',kimi_k2_7_code:'Kimi K2.7 Code',deepseek_v4_pro:'DeepSeek V4 Pro'};
+const SHADE={0:.9,1:.45,2:.13};
+const cv=document.createElement('canvas').getContext('2d');
+const SANS='"Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+function tw(t,sz,wt){cv.font=`${wt} ${sz}px ${SANS}`;return cv.measureText(t).width;}
+function gutter(labels,w,sz=13.5,wt=600,cap=.46){return Math.min(w*cap,Math.max(...labels.map(t=>tw(t,sz,wt)))+24);}
+const narrow=w=>w<540;
+function el(tag,a={},p){const e=document.createElementNS(NS,tag);for(const k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;}
+function frame(id,label){const c=document.getElementById(id);c.innerHTML='';const w=c.clientWidth,h=c.clientHeight;
+  const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`,role:'img','aria-label':label});c.appendChild(s);return{s,w,h};}
+const sc=(d0,d1,r0,r1)=>v=>r0+(v-d0)/(d1-d0)*(r1-r0);
+const f2=v=>v.toFixed(2), pct=v=>Math.round(v*100)+'%', sg=v=>(v>0?'+':'')+v.toFixed(2);
+function xAxis(s,x,y,ticks,fmt=f2,labels){ticks.forEach(t=>{el('line',{x1:x(t),x2:x(t),y1:y,y2:y+5,class:'ax'},s);
+  el('text',{x:x(t),y:y+18,'text-anchor':'middle',class:'t',text:labels&&labels[t]!=null?labels[t]:fmt(t)},s);});}
+function hline(s,x0,x1,y,cls='ax'){el('line',{x1:x0,x2:x1,y1:y,y2:y,class:cls},s);}
+function vline(s,x,y0,y1,cls='ref'){el('line',{x1:x,x2:x,y1:y0,y2:y1,class:cls},s);}
+function seg(s,x1,x2,y,cls,wd,anim){const ln=el('line',{x1,x2,y1:y,y2:y,class:cls+(anim?' draw':''),'stroke-width':wd,'stroke-linecap':'round'},s);if(anim)ln.style.setProperty('--len',Math.abs(x2-x1));return ln;}
+const SCALE={0:'0 fail',1:'1 partial',2:'2 pass'};
+
+function hero(){const {s,w,h}=frame('hero','Model means with 95% intervals: all three intervals overlap');const rows=DATA.leaderboard;
+  const L=gutter(rows.map(r=>r.label),w),R=28,x=sc(0,2,L,w-R);
+  const lo=Math.max(...rows.map(r=>r.ci[0])),hi=Math.min(...rows.map(r=>r.ci[1]));
+  el('rect',{x:x(lo),y:22,width:x(hi)-x(lo),height:h-74,class:'band'},s);
+  el('text',{x:(x(lo)+x(hi))/2,y:16,'text-anchor':'middle',class:'ts',text:'shared by all three'},s);
+  const g=(h-84)/rows.length;
+  rows.forEach((r,i)=>{const y=38+g*(i+.5);
+    el('text',{x:L-14,y:y+4.5,'text-anchor':'end',class:'tl',text:r.label},s);
+    seg(s,x(r.ci[0]),x(r.ci[1]),y,'sink',3,true).style.animationDelay=(i*120)+'ms';
+    el('circle',{cx:x(r.mean),cy:y,r:6.5,class:'ink'},s);
+    el('text',{x:x(r.mean),y:y-12,'text-anchor':'middle',class:'t',text:f2(r.mean)},s);});
+  hline(s,L,w-R,h-44);xAxis(s,x,h-44,narrow(w)?[0,1,2]:[0,.5,1,1.5,2],f2,SCALE);}
+
+function table(){const tb=document.querySelector('#board tbody');tb.innerHTML='';
+  DATA.leaderboard.forEach(r=>{const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${r.label}</td><td class="num">${f2(r.mean)}</td><td class="num">${f2(r.ci[0])} – ${f2(r.ci[1])}</td><td class="num">${pct(r.p_rank1)}</td><td class="num">${pct(r.pass_rate)}</td><td class="num">${pct(r.fail_rate)}</td><td class="num">${r.n}</td>`;tb.appendChild(tr);});}
+
+function ranks(){const {s,w,h}=frame('ranks','Probability of placing first, second or third');const rows=DATA.leaderboard;
+  const L=gutter(rows.map(r=>r.label),w),R=24,x=sc(0,1,L,w-R),g=(h-24)/rows.length;
+  rows.forEach((r,i)=>{const y=12+g*i,bh=g*.58;let acc=0;
+    el('text',{x:L-14,y:y+bh/2+5,'text-anchor':'end',class:'tl',text:r.label},s);
+    r.rank_dist.forEach((p,k)=>{if(p>0){const bw=x(acc+p)-x(acc);const rc=el('rect',{x:x(acc),y,width:Math.max(0,bw-1),height:bh,class:'ink'},s);rc.style.opacity=[1,.45,.15][k];
+      if(bw>34)el('text',{x:x(acc)+6,y:y+bh/2+4.5,class:'ts',style:`fill:${k==0?'var(--paper)':'var(--ink)'}`,text:pct(p)},s);}acc+=p;});});}
+
+function items(){const {s,w,h}=frame('items','Score of every item for every model');const ms=['glm_5_2','kimi_k2_7_code','deepseek_v4_pro'],its=DATA.items;
+  const sz=narrow(w)?12:12.5,L=gutter(ms.map(m=>LABEL[m]),w,sz,400,.34),R=10,T=8,cw=(w-L-R)/its.length,ch=(h-T-32)/ms.length;
+  ms.forEach((m,j)=>el('text',{x:L-10,y:T+ch*j+ch/2+4,'text-anchor':'end',class:'t',style:`font-size:${sz}px`,text:LABEL[m]},s));
+  its.forEach((it,i)=>{const g=el('g',{},s);el('title',{text:`${it.item} (${it.hyp}, ${it.dim}), mean ${f2(it.mean)}`},g);
+    const gap=cw>8?2:1;
+    ms.forEach((m,j)=>{const v=it.scores[m],x0=L+i*cw,y0=T+ch*j;
+      if(v===null)el('rect',{x:x0+.5,y:y0+.5,width:cw-gap-1,height:ch-gap-1,fill:'none',style:'stroke:var(--ink-3);stroke-dasharray:2 2'},g);
+      else{const rc=el('rect',{x:x0,y:y0,width:cw-gap,height:ch-gap,class:'ink',rx:1.5},g);rc.style.opacity=SHADE[v];}});
+    el('rect',{x:L+i*cw,y:T+ch*ms.length+3,width:cw-gap,height:6,class:it.cat},g);});
+  el('text',{x:L,y:h-5,class:'ts',text:'hardest'},s);el('text',{x:w-R,y:h-5,'text-anchor':'end',class:'ts',text:'easiest'},s);}
+
+function icc(){const {s,w,h}=frame('icc','Share of score variance between archetypes');const v=DATA.mixed_model.icc_archetype,nw=narrow(w);
+  const x=sc(0,1,10,w-10),y=10,bh=h-20;
+  el('rect',{x:x(0),y,width:x(v)-x(0),height:bh,class:'ink'},s);
+  const r2=el('rect',{x:x(v),y,width:x(1)-x(v),height:bh,class:'ink'},s);r2.style.opacity=.14;
+  el('text',{x:x(0)+8,y:y+bh/2+4.5,class:'ts',style:'fill:var(--paper)',text:nw?`between cases ${pct(v)}`:`between archetypes ${pct(v)}`},s);
+  el('text',{x:x(v)+8,y:y+bh/2+4.5,class:'ts',text:nw?`within ${pct(1-v)}`:`within archetype, including model ${pct(1-v)}`},s);}
+
+function archs(){const {s,w,h}=frame('archs','Mean score by archetype, with individual responses');const A=DATA.archetypes,nw=narrow(w);
+  const lab=a=>nw?a.archetype.replace(/_[A-Z]\d+$/,''):a.archetype.replace(/_([A-Z]\d+)$/,' ($1)');
+  const L=gutter(A.map(lab),w),R=22,pad=16,x=sc(0,2,L+pad,w-R-pad),g=(h-56)/A.length;
+  A.forEach((a,i)=>{const y=16+g*(i+.5);hline(s,x(0),x(2),y,'ref');
+    el('text',{x:L-10,y:y+4.5,'text-anchor':'end',class:'tl',text:lab(a)},s);
+    const k={0:0,1:0,2:0};a.scores.forEach(v=>{const n=k[v]++,col=Math.floor(n/2),dy=n%2?4:-4,dir=v===0?1:v===2?-1:(col%2?1:-1),
+      dx=v===1?Math.ceil(col/2)*6*dir:col*6*dir;const c=el('circle',{cx:x(v)+dx,cy:y+dy,r:2.8,class:a.cat},s);c.style.opacity=.55;});
+    el('rect',{x:x(a.mean)-2.5,y:y-11,width:5,height:22,class:a.cat,rx:1},s);
+    const right=a.mean>1.7;el('text',{x:x(a.mean)+(right?-9:9),y:y-8,'text-anchor':right?'end':'start',class:'t',text:f2(a.mean)},s);});
+  hline(s,x(0),x(2),h-36);xAxis(s,x,h-36,[0,1,2],f2,SCALE);}
+
+function cells(){const {s,w,h}=frame('cells','Mean by dimension and category with 95% intervals');const nw=narrow(w);
+  const names=nw?{D1:'Temporal',D3:'Constraints',D5:'Relational'}:{D1:'Temporal reasoning',D3:'Local constraints',D5:'Relational reasoning'},dims=['D1','D3','D5'];
+  const L=gutter(dims.map(d=>names[d]),w),R=24,x=sc(0,2,L,w-R),g=(h-56)/dims.length;
+  dims.forEach((d,i)=>{const y=18+g*(i+.5);el('text',{x:L-14,y:y+4.5,'text-anchor':'end',class:'tl',text:names[d]},s);
+    [['cardiovascular','cardio',-11],['neurological','neuro',11]].forEach(([cat,cls,dy])=>{const c=DATA.cells.find(q=>q.dimension==d&&q.category==cat);if(!c)return;
+      seg(s,x(c.ci[0]),x(c.ci[1]),y+dy,'s'+cls,2.5);el('circle',{cx:x(c.mean),cy:y+dy,r:5,class:cls},s);
+      el('text',{x:x(c.mean),y:y+dy+(dy<0?-8:16),'text-anchor':'middle',class:'ts',text:f2(c.mean)},s);});});
+  hline(s,L,w-R,h-36);xAxis(s,x,h-36,nw?[0,1,2]:[0,.5,1,1.5,2]);}
+
+function perm(){const {s,w,h}=frame('perm','Permutation distribution of the category difference');const P=DATA.perm_distribution,obs=DATA.category.diff_neuro_minus_cardio;
+  const L=16,R=16,B=40,T=24,lo=-.8,hi=.8,bins=24,bw=(hi-lo)/bins,cnt=new Array(bins).fill(0);
+  P.forEach(v=>{cnt[Math.min(bins-1,Math.max(0,Math.floor((v-lo)/bw)))]++;});
+  const x=sc(lo,hi,L,w-R),y=sc(0,Math.max(...cnt),h-B,T);
+  cnt.forEach((c,k)=>{if(!c)return;const a=lo+k*bw,mid=a+bw/2,r=el('rect',{x:x(a)+1,y:y(c),width:Math.max(1,x(a+bw)-x(a)-2),height:(h-B)-y(c),class:'ink'},s);
+    r.style.opacity=Math.abs(mid)>=Math.abs(obs)-bw/2?.9:.2;});
+  vline(s,x(obs),T-8,h-B,'sink');vline(s,x(-obs),T-8,h-B,'ref');
+  el('text',{x:x(obs),y:T-12,'text-anchor':'end',class:'t',text:`observed +${f2(obs)}, p = ${DATA.category.p_exact_permutation.toFixed(3)}`},s);
+  hline(s,L,w-R,h-B);xAxis(s,x,h-B,[-.6,-.3,0,.3,.6],v=>(v>0?'+':'')+v.toFixed(1));}
+
+function loo(){const {s,w,h}=frame('loo','Category difference with each archetype left out');const E=Object.entries(DATA.category.leave_one_out).sort((a,b)=>a[1]-b[1]);
+  const lab=a=>a.replace(/_[A-Z]\d+$/,''),L=gutter(E.map(([a])=>lab(a)),w,12,600),R=20,B=40,x=sc(0,1,L,w-R),g=(h-B-10)/E.length,full=DATA.category.diff_neuro_minus_cardio;
+  vline(s,x(full),4,h-B);E.forEach(([a,v],i)=>{const y=10+g*(i+.5),key=a==='CARDIO_01_I21';
+    el('text',{x:L-10,y:y+4,'text-anchor':'end',class:key?'tl':'ts',text:lab(a)},s);
+    el('circle',{cx:x(v),cy:y,r:key?5:3.5,class:a.startsWith('CARDIO')?'cardio':'neuro'},s);});
+  hline(s,L,w-R,h-B);xAxis(s,x,h-B,[0,.5,1],v=>v.toFixed(1));}
+
+function rigid(){const {s,w,h}=frame('rigid','Outcome by whether the plan was revised');const bs=DATA.rigidity.by_score,nw=narrow(w);
+  const tot=k=>['fail','partial','pass'].reduce((a,q)=>a+bs[q][k],0);
+  const rows=[[nw?`Kept (${tot('kept')})`:`Kept initial plan (${tot('kept')})`,'kept'],[nw?`Revised (${tot('revised')})`:`Revised plan (${tot('revised')})`,'revised']];
+  const L=gutter(rows.map(r=>r[0]),w),R=20,x=sc(0,1,L,w-R),g=(h-12)/rows.length;
+  rows.forEach(([lab,k],i)=>{const y=8+g*i,bh=g*.6,T=tot(k);let acc=0;
+    el('text',{x:L-14,y:y+bh/2+5,'text-anchor':'end',class:'tl',text:lab},s);
+    [['fail',0],['partial',1],['pass',2]].forEach(([q,v])=>{const n=bs[q][k],p=n/T,rc=el('rect',{x:x(acc),y,width:Math.max(0,x(acc+p)-x(acc)-1),height:bh,class:'ink'},s);
+      rc.style.opacity=SHADE[v];if(n)el('text',{x:x(acc)+6,y:y+bh/2+4.5,class:'ts',style:`fill:${v==0?'var(--paper)':'var(--ink)'}`,text:n},s);acc+=p;});});}
+
+function mixed(){const {s,w,h}=frame('mixed','Fixed effects with 95% confidence intervals');const nw=narrow(w);
+  const map=[['deepseek_v4_pro','DeepSeek vs GLM','DeepSeek vs GLM'],['kimi_k2_7_code','Kimi vs GLM','Kimi vs GLM'],['neurological','Neurological vs cardiovascular','Neuro vs cardio'],['T.D3','Local constraints vs temporal','Constraints vs temporal'],['T.D5','Relational vs temporal','Relational vs temporal']];
+  const rows=DATA.mixed_model.fixed_effects.filter(f=>f.term!=='Intercept').map(f=>{const m=map.find(([k])=>f.term.includes(k));return{...f,lab:m?(nw?m[2]:m[1]):f.term};});
+  const L=gutter(rows.map(r=>r.lab),w),R=24,x=sc(-1,1.5,L,w-R),g=(h-56)/rows.length;
+  vline(s,x(0),6,h-36,'sink');rows.forEach((r,i)=>{const y=16+g*(i+.5),sig=r.p<.05;
+    el('text',{x:L-14,y:y+4.5,'text-anchor':'end',class:sig?'tl':'t',text:r.lab},s);
+    seg(s,x(r.ci[0]),x(r.ci[1]),y,sig?'sneuro':'sink',2.5);el('circle',{cx:x(r.est),cy:y,r:5,class:sig?'neuro':'ink'},s);
+    el('text',{x:x(r.est),y:y-10,'text-anchor':'middle',class:'ts',text:`${sg(r.est)}, p = ${r.p.toFixed(3)}`},s);});
+  hline(s,L,w-R,h-36);xAxis(s,x,h-36,nw?[-1,0,1]:[-1,-.5,0,.5,1,1.5],v=>(v>0?'+':'')+v.toFixed(1));}
+
+function power(id,pts,xk,now,target,ticks,label){const {s,w,h}=frame(id,label);const L=46,R=20,T=22,B=40,xs=pts.map(p=>p[xk]),x=sc(0,Math.max(...xs),L,w-R),y=sc(0,1,h-B,T);
+  [0,.5,1].forEach(v=>el('text',{x:L-8,y:y(v)+4,'text-anchor':'end',class:'ts',text:pct(v)},s));
+  hline(s,L,w-R,y(.8),'ref');el('text',{x:w-R,y:y(.8)+15,'text-anchor':'end',class:'ts',text:'80% power'},s);
+  el('path',{d:pts.map((p,i)=>`${i?'L':'M'}${x(p[xk])},${y(p.power)}`).join(' '),fill:'none',class:'sink','stroke-width':2},s);
+  pts.forEach(p=>el('circle',{cx:x(p[xk]),cy:y(p.power),r:3,class:'ink'},s));
+  [[now,'pre-pilot','ref','start'],[target,'proposed','sink','start']].forEach(([v,t,c,a])=>{vline(s,x(v),T-10,h-B,c);el('text',{x:x(v)+5,y:T-2,'text-anchor':a,class:'ts',text:t},s);});
+  hline(s,L,w-R,h-B);xAxis(s,x,h-B,ticks,v=>v);}
+
+function render(){hero();table();ranks();items();icc();archs();cells();perm();loo();rigid();mixed();
+  power('powcat',DATA.power.category_curve,'archetypes_per_category',5,10,[5,10,15,20,30],'Power for the category effect by archetypes per category');
+  power('powmod',DATA.power.model_curve,'paired_items',25,180,[25,100,200,300],'Power for the model gap by paired items');}
+render();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(render);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(render,150);});
+</script>
+</body>
+</html>
