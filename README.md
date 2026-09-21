@@ -298,4 +298,4 @@ The protocol (§4) specifies a broader metric set than the pre-pilot could opera
 
 **Contact** · pvfhealthtech@gmail.com
 
-**[Interactive pre-pilot leaderboard](https://github.com/GitPedro98/ClinicalUncertainty/index.html)**
+**[Interactive pre-pilot leaderboard](https://github.com/https://gitpedro98.github.io/ClinicalUncertainty)**
