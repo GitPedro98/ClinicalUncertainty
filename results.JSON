@@ -1,0 +1,358 @@
+{
+  "n_scored": 85,
+  "n_items": 30,
+  "n_archetypes": 10,
+  "bootstrap_draws": 10000,
+  "seed": 20260920,
+  "leaderboard": [
+    {
+      "model": "glm_5_2",
+      "label": "GLM 5.2",
+      "n": 29,
+      "mean": 1.5862068965517242,
+      "ci": [
+        1.1333333333333333,
+        1.9310344827586208
+      ],
+      "pass_rate": 0.7241379310344828,
+      "fail_rate": 0.13793103448275862,
+      "p_rank1": 0.6737,
+      "rank_dist": [
+        0.6737,
+        0.2817,
+        0.0446
+      ]
+    },
+    {
+      "model": "kimi_k2_7_code",
+      "label": "Kimi K2.7 Code",
+      "n": 27,
+      "mean": 1.5185185185185186,
+      "ci": [
+        1.1428571428571428,
+        1.8518518518518519
+      ],
+      "pass_rate": 0.6296296296296297,
+      "fail_rate": 0.1111111111111111,
+      "p_rank1": 0.3155,
+      "rank_dist": [
+        0.3155,
+        0.6629,
+        0.0216
+      ]
+    },
+    {
+      "model": "deepseek_v4_pro",
+      "label": "DeepSeek V4 Pro",
+      "n": 29,
+      "mean": 1.3448275862068966,
+      "ci": [
+        1.0344827586206897,
+        1.6296296296296295
+      ],
+      "pass_rate": 0.5517241379310345,
+      "fail_rate": 0.20689655172413793,
+      "p_rank1": 0.0108,
+      "rank_dist": [
+        0.0108,
+        0.0554,
+        0.9338
+      ]
+    }
+  ],
+  "friedman": {
+    "n_items_complete": 25,
+    "chi2": 0.827586206896583,
+    "p": 0.661137724231845
+  },
+  "pairwise": [
+    {
+      "a": "DeepSeek V4 Pro",
+      "b": "GLM 5.2",
+      "diff": -0.16,
+      "ci": [
+        -0.47058823529411764,
+        0.0
+      ],
+      "wilcoxon_p": 0.486121485132055
+    },
+    {
+      "a": "DeepSeek V4 Pro",
+      "b": "Kimi K2.7 Code",
+      "diff": -0.12,
+      "ci": [
+        -0.25,
+        0.0
+      ],
+      "wilcoxon_p": 0.5190408497380881
+    },
+    {
+      "a": "GLM 5.2",
+      "b": "Kimi K2.7 Code",
+      "diff": 0.04,
+      "ci": [
+        -0.14285714285714285,
+        0.2
+      ],
+      "wilcoxon_p": 0.9659712146940179
+    }
+  ],
+  "kendall_w": {
+    "W": 0.5802136752136752,
+    "chi2": 41.77538461538461,
+    "df": 24,
+    "p": 0.013672346790087447,
+    "n_items": 25
+  },
+  "item_spearman": {
+    "DeepSeek V4 Pro \u00d7 GLM 5.2": 0.6085640356846245,
+    "DeepSeek V4 Pro \u00d7 Kimi K2.7 Code": 0.7098416124630941,
+    "GLM 5.2 \u00d7 Kimi K2.7 Code": 0.6736647832073188
+  },
+  "category": {
+    "diff_neuro_minus_cardio": 0.6206349206349204,
+    "p_exact_permutation": 0.047619047619047616,
+    "n_permutations": 252,
+    "archetype_means": {
+      "CARDIO_01_I21": 0.2222222222222222,
+      "CARDIO_02_I20": 1.3333333333333333,
+      "CARDIO_03_I25": 2.0,
+      "CARDIO_04_I24": 1.0,
+      "CARDIO_05_R07": 1.375,
+      "NEURO_01_I64": 1.8888888888888888,
+      "NEURO_02_G45": 1.7777777777777777,
+      "NEURO_03_I61": 1.875,
+      "NEURO_04_I63": 1.7142857142857142,
+      "NEURO_05_G41": 1.7777777777777777
+    },
+    "leave_one_out": {
+      "CARDIO_01_I21": 0.3796626984126983,
+      "CARDIO_02_I20": 0.657440476190476,
+      "CARDIO_03_I25": 0.8241071428571427,
+      "CARDIO_04_I24": 0.5741071428571427,
+      "CARDIO_05_R07": 0.6678571428571427,
+      "NEURO_01_I64": 0.6000992063492063,
+      "NEURO_02_G45": 0.627876984126984,
+      "NEURO_03_I61": 0.6035714285714284,
+      "NEURO_04_I63": 0.6437499999999998,
+      "NEURO_05_G41": 0.627876984126984
+    },
+    "mannwhitney_p": 0.14245669739409875
+  },
+  "mixed_model": {
+    "formula": "score ~ model + category + dimension + (1 | archetype)",
+    "fixed_effects": [
+      {
+        "term": "Intercept",
+        "est": 1.3291920220126492,
+        "ci": [
+          0.8628277870801608,
+          1.7955562569451375
+        ],
+        "p": 2.3219334206269733e-08
+      },
+      {
+        "term": "C(model, Treatment('glm_5_2'))[T.deepseek_v4_pro]",
+        "est": -0.2245211491953499,
+        "ci": [
+          -0.5122748622772726,
+          0.0632325638865728
+        ],
+        "p": 0.1261973122142777
+      },
+      {
+        "term": "C(model, Treatment('glm_5_2'))[T.kimi_k2_7_code]",
+        "est": -0.024519414163482054,
+        "ci": [
+          -0.3191510204712559,
+          0.2701121921442917
+        ],
+        "p": 0.8704323411232384
+      },
+      {
+        "term": "C(category)[T.neurological]",
+        "est": 0.6330822576364865,
+        "ci": [
+          0.060612845491052725,
+          1.2055516697819204
+        ],
+        "p": 0.030197950711656454
+      },
+      {
+        "term": "C(dimension)[T.D3]",
+        "est": -0.196052963044616,
+        "ci": [
+          -0.4842687963477424,
+          0.09216287025851039
+        ],
+        "p": 0.18245775867444836
+      },
+      {
+        "term": "C(dimension)[T.D5]",
+        "est": 0.009988556283349057,
+        "ci": [
+          -0.28626849863240034,
+          0.30624561119909843
+        ],
+        "p": 0.9473126707847188
+      }
+    ],
+    "var_archetype": 0.17611731231212416,
+    "var_residual": 0.31138759358089324,
+    "icc_archetype": 0.3612626461461148
+  },
+  "cells": [
+    {
+      "dimension": "D1",
+      "category": "cardiovascular",
+      "n": 15,
+      "mean": 1.2666666666666666,
+      "ci": [
+        0.6666666666666666,
+        2.0
+      ],
+      "pass_rate": 0.4666666666666667
+    },
+    {
+      "dimension": "D1",
+      "category": "neurological",
+      "n": 13,
+      "mean": 1.8461538461538463,
+      "ci": [
+        1.6363636363636365,
+        2.0
+      ],
+      "pass_rate": 0.8461538461538461
+    },
+    {
+      "dimension": "D3",
+      "category": "cardiovascular",
+      "n": 15,
+      "mean": 0.9333333333333333,
+      "ci": [
+        0.3333333333333333,
+        1.5
+      ],
+      "pass_rate": 0.26666666666666666
+    },
+    {
+      "dimension": "D3",
+      "category": "neurological",
+      "n": 15,
+      "mean": 1.8,
+      "ci": [
+        1.5333333333333334,
+        2.0
+      ],
+      "pass_rate": 0.8666666666666667
+    },
+    {
+      "dimension": "D5",
+      "category": "cardiovascular",
+      "n": 13,
+      "mean": 1.3076923076923077,
+      "ci": [
+        0.5,
+        2.0
+      ],
+      "pass_rate": 0.5384615384615384
+    },
+    {
+      "dimension": "D5",
+      "category": "neurological",
+      "n": 14,
+      "mean": 1.7857142857142858,
+      "ci": [
+        1.4,
+        2.0
+      ],
+      "pass_rate": 0.8571428571428571
+    }
+  ],
+  "rigidity": {
+    "table": {
+      "kept_fail": 6,
+      "kept_nonfail": 22,
+      "revised_fail": 3,
+      "revised_nonfail": 27
+    },
+    "odds_ratio": 2.4545454545454546,
+    "fisher_p": 0.2904056630325689,
+    "revision_rate_by_model": {
+      "DeepSeek V4 Pro": 0.6,
+      "GLM 5.2": 0.3,
+      "Kimi K2.7 Code": 0.6666666666666666
+    },
+    "by_score": {
+      "pass": {
+        "kept": 17,
+        "revised": 18
+      },
+      "partial": {
+        "kept": 5,
+        "revised": 9
+      },
+      "fail": {
+        "kept": 6,
+        "revised": 3
+      }
+    }
+  },
+  "power": {
+    "category_effect_size": 0.6206349206349204,
+    "model_gap": 0.24137931034482762,
+    "category_curve": [
+      {
+        "archetypes_per_category": 5,
+        "power": 0.4805
+      },
+      {
+        "archetypes_per_category": 8,
+        "power": 0.6905
+      },
+      {
+        "archetypes_per_category": 10,
+        "power": 0.802
+      },
+      {
+        "archetypes_per_category": 15,
+        "power": 0.9505
+      },
+      {
+        "archetypes_per_category": 20,
+        "power": 0.988
+      },
+      {
+        "archetypes_per_category": 30,
+        "power": 0.998
+      }
+    ],
+    "model_curve": [
+      {
+        "paired_items": 25,
+        "power": 0.3995
+      },
+      {
+        "paired_items": 50,
+        "power": 0.6935
+      },
+      {
+        "paired_items": 100,
+        "power": 0.94
+      },
+      {
+        "paired_items": 150,
+        "power": 0.993
+      },
+      {
+        "paired_items": 200,
+        "power": 0.998
+      },
+      {
+        "paired_items": 300,
+        "power": 1.0
+      }
+    ],
+    "sd_paired_diff": 0.6879922480183431
+  }
+}
