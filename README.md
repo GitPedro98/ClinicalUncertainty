@@ -48,10 +48,6 @@ Open responses are scored **pass (2) · partial (1) · fail (0)** against rubric
 | **The hardest case requires placing evidence in time.** | `CARDIO_01` (all evidence two months old): 0 passes in 9 responses |
 | **The pre-pilot is underpowered, and the power curve sets the next phase.** | 0.48 for the category effect, 0.40 for the model gap; 0.80 needs 10 archetypes per domain |
 
-![Mean score by archetype, with individual responses](figures/03_archetypes.png)
-
-**Read the full analysis in [RESULTS.md](RESULTS.md).** Everything in it regenerates from the scoring file.
-
 ## Planned annotation protocol
 
 The pre-pilot has a single annotator, which is its largest limitation. The next phase replaces that with double-blind physician annotation and a two-tier quality control, so that a verdict never rests on one reader.
