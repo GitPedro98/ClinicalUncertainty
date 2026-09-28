@@ -3,11 +3,7 @@
 **Measuring frontier language model trustworthiness when the deployment context diverges from training.**
 
 [![Interactive leaderboard](https://img.shields.io/badge/Interactive_leaderboard-open-9E1F33?style=for-the-badge)](https://gitpedro98.github.io/ClinicalUncertainty)
-[![Results](https://img.shields.io/badge/Pre--pilot_results-read-1B2331?style=for-the-badge)](RESULTS.md)
-[![Status](https://img.shields.io/badge/status-pre--pilot-4A5466?style=for-the-badge)](RESULTS.md#limitations)
-[![License](https://img.shields.io/github/license/GitPedro98/ClinicalUncertainty?style=for-the-badge&color=4A5466)](LICENSE)
-
-![Mean rubric score per model, with 95% cluster-bootstrap intervals](figures/01_leaderboard.png)
+[![License](https://img.shields.io/github/license/GitPedro98/ClinicalUncertainty?style=for-the-badge&color=4A5466)](https://github.com/GitPedro98/ClinicalUncertainty/blob/main/LICENSE)
 
 *The three pre-pilot models cannot be ranked at this sample size: every 95% interval overlaps (Friedman p = 0.66). The benchmark itself is consistent across them, which is the result that matters at this stage.*
 
